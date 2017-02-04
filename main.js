@@ -222,6 +222,7 @@ global.install();
 let cpuAtFirstLoop;
 module.exports.loop = function () {
     const cpuAtLoop = Game.cpu.getUsed();
+    let p = startProfiling('main');
     if (!cpuAtFirstLoop) cpuAtFirstLoop = cpuAtLoop;
 
     // ensure required memory namespaces
@@ -239,7 +240,6 @@ module.exports.loop = function () {
     _.assign(global, load("parameter"));
     global.isNewServer = Game.cacheTime !== Game.time-1 || Game.time - Game.lastServerSwitch > 50; // enforce reload after 50 ticks
     if( global.isNewServer ) Game.lastServerSwitch = Game.time;
-
     // Flush cache
     Events.flush();
     FlagDir.flush();
@@ -248,27 +248,32 @@ module.exports.loop = function () {
     Task.flush();
     // custom flush
     if( global.mainInjection.flush ) global.mainInjection.flush();
-
+    p.checkCPU('flush', 5);
     // analyze environment
     FlagDir.analyze();
     Room.analyze();
     Population.analyze();
     // custom analyze
     if( global.mainInjection.analyze ) global.mainInjection.analyze();
-
+    p.checkCPU('analyze', 5);
     // Register event hooks
     Creep.register();
     Spawn.register();
     Task.register();
     // custom register
     if( global.mainInjection.register ) global.mainInjection.register();
-
+    p.checkCPU('register', 5);
     // Execution
     Population.execute();
+    p.checkCPU('Population.execute', 10);
     FlagDir.execute();
+    p.checkCPU('FlagDir.execute', 10);
     Room.execute();
+    p.checkCPU('Room.execute', 10);
     Creep.execute();
+    p.checkCPU('Creep.execute', 10);
     Spawn.execute();
+    p.checkCPU('Spawn.execute', 10);
     // custom execute
     if( global.mainInjection.execute ) global.mainInjection.execute();
 
@@ -280,12 +285,17 @@ module.exports.loop = function () {
     Population.cleanup();
     // custom cleanup
     if( global.mainInjection.cleanup ) global.mainInjection.cleanup();
-	
+    p.checkCPU('cleanup', 5);
+
     if ( ROOM_VISUALS ) Visuals.run(); // At end to correctly display used CPU.
-    
+    p.checkCPU('visuals', 5);
+
     if ( GRAFANA && Game.time % GRAFANA_INTERVAL === 0 ) Grafana.run();
+    p.checkCPU('grafana', 5);
 
     Game.cacheTime = Game.time;
 
     if( DEBUG && TRACE ) trace('main', {cpuAtLoad, cpuAtFirstLoop, cpuAtLoop, cpuTick: Game.cpu.getUsed(), isNewServer: global.isNewServer, lastServerSwitch: Game.lastServerSwitch, main:'cpu'});
+    p.total();
+    console.log('\n');
 };
