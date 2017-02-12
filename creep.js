@@ -469,9 +469,9 @@ mod.extend = function(){
 mod.execute = function(){
     if ( DEBUG && Game.cpu.bucket < CRITICAL_BUCKET_LEVEL ) logSystem('system',`${Game.time}: CPU Bucket level is critical (${Game.cpu.bucket}). Skipping non critical creep roles.`);
     let run = creep => {
-        let p = startProfiling(creep.name);
+        let p = startProfiling('execute:' + (creep.action ? creep.action.name : ''));
         creep.run();
-        p.checkCPU('execute', 5);
+        p.checkCPU(creep.name + (creep.action ? creep.action.name : ''), 1.5);
     };
     _.forEach(Game.creeps, run);
 };
