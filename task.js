@@ -118,7 +118,7 @@ mod.validateMemoryQueued = function(task, memory) {
         }
     };
     memory.queued.forEach(validateQueued);
-    if (memory.running.length !== running.length) {
+    if (memory.queued.length !== queued.length) {
         logError('Creep queued list contained invalid entries', {taskName: task.name});
     }
     memory.queued = queued;
@@ -136,7 +136,7 @@ mod.validateMemorySpawning = function(task, memory) {
         }
     };
     memory.spawning.forEach(validateSpawning);
-    if (memory.running.length !== running.length) {
+    if (memory.spawning.length !== spawning.length) {
         logError('Creep spawning list contained invalid entries', {taskName: task.name});
     }
     memory.spawning = spawning;
