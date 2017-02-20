@@ -4,11 +4,12 @@ mod.name = 'privateer';
 mod.run = function(creep) {
     // Assign next Action
     let oldTargetId = creep.data.targetId;
-    if( creep.action === null  || creep.action.name == 'idle' ) {
-        if( creep.data.destiny && creep.data.destiny.task && Task[creep.data.destiny.task] && Task[creep.data.destiny.task].nextAction )
-        Task[creep.data.destiny.task].nextAction(creep);
-                    
-        else this.nextAction(creep);
+    if( creep.action === null  || creep.action.name == 'idle' || !creep.flag || creep.flag.pos.roomName == creep.pos.roomName ) {
+        if( creep.data.destiny && creep.data.destiny.task && Task[creep.data.destiny.task] && Task[creep.data.destiny.task].nextAction ) {
+            Task[creep.data.destiny.task].nextAction(creep);
+        } else {
+            this.nextAction(creep);
+        }
     }
     
     // Do some work
@@ -153,4 +154,18 @@ mod.exploitNextRoom = function(creep){
         Creep.action.travelling.assign(creep, creep);
     }
     return false;
+};
+mod.strategies = {
+    defaultStrategy: {
+        name: `default-${mod.name}`,
+    },
+    withdrawing: {
+        name: `withdrawing-${mod.name}`,
+        isValidAction: function(creep) {
+            return false;
+        },
+    },
+};
+mod.selectStrategies = function(actionName) {
+    return [mod.strategies.defaultStrategy, mod.strategies[actionName]];
 };
