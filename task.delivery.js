@@ -1,6 +1,7 @@
 let mod = {};
 module.exports = mod;
 mod.name = 'delivery';
+mod.minControllerLevel = 4;
 // hook into events
 mod.register = () => {
     // when a new flag has been found (occurs every tick, for each flag)
@@ -25,6 +26,10 @@ mod.memory = (roomName) => {
     }
     return memory;
 };
+mod.memoryKey = function(creepData) {
+    const flag = Game.flags[creepData.destiny.targetName];
+    return flag && flag.pos.roomName;
+};
 mod.checkFlag = (flag) => {
     return flag.room && flag.room.my &&
         flag.color == FLAG_COLOR.invade.robbing.color &&
@@ -40,6 +45,12 @@ mod.handleFlagFound = function(flag) {
 mod.checkForRequiredCreeps = function(flag) {
     // check for delivery en route, and spawn a new one if the last was successful
     let memory = mod.memory(flag.pos.roomName);
+
+    if (Game.time % 500 === 0) {
+        Task.validateMemoryQueued(mod, memory);
+        Task.validateMemorySpawning(mod, memory);
+        Task.validateMemoryRunning(mod, memory);
+    }
 
     if (memory.queued.length + memory.spawning.length > 0) {
         return;
@@ -118,18 +129,19 @@ mod.handleSpawningCompleted = function(creep) {
         memory.running.push(creep.name);
     }
 };
-mod.handleCreepDied = function(creepName) {
-    const entry = Population.getCreep(creepName);
-    if( !(entry && entry.destiny && entry.destiny.task === mod.name) ) {
-        return;
-    }
-    const flag = Game.flags[entry.destiny.targetName];
-    if (flag) {
-        const running = mod.memory(flag.pos.roomName).running;
-        const index = _.indexOf(running, creepName);
-        running.splice(index, 1);
-    }
-};
+mod.handleCreepDied = Task.handleCreepDied(mod);
+//     function(creepName) {
+//     const entry = Population.getCreep(creepName);
+//     if( !(entry && entry.destiny && entry.destiny.task === mod.name) ) {
+//         return;
+//     }
+//     const flag = Game.flags[entry.destiny.targetName];
+//     if (flag) {
+//         const running = mod.memory(flag.pos.roomName).running;
+//         const index = _.indexOf(running, creepName);
+//         running.splice(index, 1);
+//     }
+// };
 mod.creep = {
     recycler: {
         fixedBody: [CARRY, MOVE],
