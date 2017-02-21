@@ -1,0 +1,21 @@
+{
+  "ocs.internal": {
+    "reset": "upstream/dev",
+    "merge": [
+      "upstream/feature/healAlly",
+      "upstream/feature/coreHits"
+    ]
+  },
+  "ocs.public": {
+    "reset": "upstream/dev",
+    "merge": [
+      "upstream/change/miningReservers",
+      "upstream/bug/robbingDeletedFlag",
+      "upstream/change/customCreepMax",
+      "upstream/feature/criticalCPU",
+      "upstream/change/unifyMining",
+      "upstream/change/actionFlagSwap",
+      "upstream/change/noSelfTarget"
+    ]
+  }
+}
