@@ -167,9 +167,12 @@ mod.analyze = function(){
 };
 mod.execute = function() {
     let triggerFound = entry => {
-        if( !entry.cloaking || entry.cloaking == 0)
-        Flag.found.trigger(Game.flags[entry.name]);
-    }
+        if( !entry.cloaking || entry.cloaking == 0) {
+            let p = startProfiling('Flag.execute');
+            Flag.found.trigger(Game.flags[entry.name]);
+            p.checkCPU(entry.name, 2);
+        }
+    };
     this.list.forEach(triggerFound);
 
     let triggerRemoved = flagName => Flag.FlagRemoved.trigger(flagName);
