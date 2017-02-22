@@ -228,7 +228,8 @@ mod.checkForRequiredCreeps = (flag) => {
     // only spawn haulers when powerbank hits are lower than 100k
     // (flag && flag.room.powerBank && flag.room.powerBank.hits < 100000)
     let maxHaulers = 0;
-    if(haulerCount < maxHaulers ) {
+    if(flag){
+    if(haulerCount < maxHaulers && (flag && flag.room.powerBank && flag.room.powerBank.hits < 100000)) {
         for(let i = haulerCount; i < maxHaulers; i++) {
             const spawnRoom = mod.strategies.hauler.spawnRoom(roomName);
             if( !spawnRoom ) break;
@@ -258,6 +259,7 @@ mod.checkForRequiredCreeps = (flag) => {
                 }
             );
         }
+    }
     }
     
 };
