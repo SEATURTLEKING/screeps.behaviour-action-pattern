@@ -39,6 +39,9 @@ action.newTarget = function(creep){
         return flag; // other room
     }
     if( !flag ){
+    var flag = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos);
+    }
+    if( !flag ){
         // unregister
         creep.action = null;
         delete creep.data.actionName;
@@ -59,7 +62,14 @@ action.newTarget = function(creep){
         });
         if( target )
             return target;
-
+       // attack power bank
+       target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return structure.structureType == STRUCTURE_POWER_BANK;
+            }
+        });
+        if( target )
+            return target;
         // attack tower
        target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {
             filter: (structure) => {
