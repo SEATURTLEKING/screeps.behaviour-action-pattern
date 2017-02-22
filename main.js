@@ -144,7 +144,7 @@ global.install = () => {
         attackController: load("task.attackController"),
         robbing: load("task.robbing"),
         reputation: load("task.reputation"),
-	powerMining: load("task.powerMining"),
+        powerMining: load("task.powerMining"),
     });
     Creep.Action = load("creep.Action");
     Creep.Setup = load("creep.Setup");
@@ -175,7 +175,8 @@ global.install = () => {
             robbing:load("creep.action.robbing"),
             reallocating:load("creep.action.reallocating"),
             recycling:load("creep.action.recycling"),
-            attackController:load("creep.action.attackController")
+            attackController:load("creep.action.attackController"),
+            powerMine:load("creep.action.powerMine")
         },
         behaviour: {
             claimer: load("creep.behaviour.claimer"),
@@ -193,7 +194,7 @@ global.install = () => {
             ranger: load("creep.behaviour.ranger"),
             upgrader: load("creep.behaviour.upgrader"),
             worker: load("creep.behaviour.worker"),
-	    powerMiner: load("creep.behaviour.powerMiner"),
+            powerMiner: load("creep.behaviour.powerMiner"),
             powerHealer: load("creep.behaviour.powerHealer"),
             powerHauler: load("creep.behaviour.powerHauler")
         },

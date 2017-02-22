@@ -33,7 +33,7 @@ mod.nextAction = function(creep) {
     };
 
     let healerCount = countExisting('powerHealer');
-
+    let attacking = creep.attack(target);
     //let powerHealer = Game.creeps[Creep.prototype.findGroupMemberByType("powerHealer", creep.data.flagName)];
     console.log('target ' + target + ' healercount ' + healerCount )
     if( !target ) {
@@ -45,7 +45,7 @@ mod.nextAction = function(creep) {
             return Creep.action.idle.assign(creep);
         }
     } else if( creep.pos.roomName === target.pos.roomName ) {
-             if( creep.pos.getRangeTo(target) < 1 ) return Creep.action.invading; //creep.attacking = creep.attack(target) == OK;
+             if( creep.pos.getRangeTo(target) < 1 ) return Creep.action.powerMine.assign(creep, target);
     }
     if( creep.pos.getRangeTo(target) > 1 ) {
         return Creep.action.travelling.assign(creep, target);
