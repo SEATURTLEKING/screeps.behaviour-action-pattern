@@ -17,12 +17,14 @@ setup.maxCount = function(room){
     let miners = (room.population.typeCount['miner']||0);
     let workers = (room.population.typeCount['worker']||0);
     let cont = room.structures.container.in.length + room.structures.links.storage.length;
-    if( miners > 0  || ( cont > 0 && workers > 2 )) {
+    if( miners > 0  || ( cont > 0 && workers > Setup['worker'].maxCount) ) {
         count += Creep.setup.upgrader.maxCount(room);
         if( room.structures.links.all.length < 3 ||
-           (room.storage && room.storage.store.energy > MAX_STORAGE_ENERGY[room.controller.level] &&
-            room.structures.container.controller && _.sum(room.structures.container.controller, 'store.energy') == 0 )) count++;
-        /* Add hauler when there is energy on the ground
+            (room.storage && 
+             room.storage.store.energy > MAX_STORAGE_ENERGY[room.controller.level] &&
+             room.structures.container.controller && 
+             _.sum(room.structures.container.controller, 'store.energy') == 0 ) ) count++;
+        /* Add hauler when there is energy on the ground */
         let dropped = 0;
         let isSource = pos => room.sources.some(s => s.pos.x === pos.x && s.pos.y === pos.y);
         let countNearSource = resource => {
@@ -31,8 +33,7 @@ setup.maxCount = function(room){
             }
         };
         room.droppedResources.forEach(countNearSource);
-        if(room.storage && dropped > 1000) count++;
-        */
+        if( room.storage && dropped > 1000 ) count++;
         if( count == 0 ) count = 1;
     }
     return count;
