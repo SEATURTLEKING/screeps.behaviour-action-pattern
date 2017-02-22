@@ -33,7 +33,7 @@ mod.extend = function(){
                 configurable: true,
                 get: function() {
                     if( _.isUndefined(this._controller) ){
-                        if( this.room.my && this.room.controller.memory.storage ){
+                        if( this.room.my && this.room.controller.memory && this.room.controller.memory.storage ){
                             this._controller = [Game.getObjectById(this.room.controller.memory.storage)];
                             if( !this._controller[0] ) delete this.room.controller.memory.storage;
                         } else {
