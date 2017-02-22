@@ -1,19 +1,23 @@
 let setup = new Creep.Setup('worker');
 module.exports = setup;
 setup.maxWorker = room => {
+    let count = 1;
     // no hauler and no miner => 1
     // if there is a miner it should be no problem to spawn a hauler, and vice versa. 
     // if none of them are present spawn a worker first
     if( !setup.hasMinerOrHauler(room))
-        return 1;
+        count = count + 1;
     // constructionsites present & no strorage or storage > min
-    if( room.constructionSites.length > 0 && (!room.storage
-        || room.storage.store && room.storage.store.energy > MIN_STORAGE_ENERGY[room.controller.level]))
-        return 1;
+    if( room.constructionSites.length > 0 && 
+        (!room.storage || 
+         (room.storage.store && room.storage.store.energy > MIN_STORAGE_ENERGY[room.controller.level])))
+        count = count + 1;
     // storage full & base fortifyable
-    if( room.storage && room.storage.store.energy > MAX_STORAGE_ENERGY[room.controller.level] && room.structures.fortifyable.length > 0 )
-        return 1;
-    return 0;
+    if( room.storage && 
+        (room.storage.store.energy > MAX_STORAGE_ENERGY[room.controller.level]) && 
+        room.structures.fortifyable.length > 0 )
+        count = count + 1;
+    return count;
 };
 // validates if there is a miner or a hauler present
 setup.hasMinerOrHauler = room => ( room.population &&
