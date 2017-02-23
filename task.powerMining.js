@@ -139,7 +139,6 @@ mod.checkForRequiredCreeps = (flag) => {
     // Prevents accidentally processing same room multiple times if flags > 1
     let memory = Task.powerMining.memory(roomName);
 
-    // get number of sources
     let trainCount = 2;
    
     // do we need to validate our spawning entries?
@@ -199,8 +198,8 @@ mod.checkForRequiredCreeps = (flag) => {
             );
         }
     }
-    //spawn 2 healers after powerMiner
-    let maxHealers = Math.ceil(memory.running.powerMiner.length * 2);
+    //spawn 2 healers after/same time as powerMiner
+    let maxHealers = minerCount * 2;
     if(healerCount < maxHealers ) {
         for(let i = healerCount; i < maxHealers; i++) {
             Task.spawn(
@@ -225,12 +224,12 @@ mod.checkForRequiredCreeps = (flag) => {
         }
     }
 
-    // only spawn haulers when powerbank hits are lower than 100k
+    // only spawn haulers when powerbank hits are lower than 650k
     // (flag && flag.room.powerBank && flag.room.powerBank.hits < 100000)
-    let maxHaulers = 3;
+    let maxHaulers = Math.ceil(flag.room.powerBank.power / 1250);
     if(flag.room){
-    	console.log('haulerCount '+haulerCount+' flag '+flag+' flag.room.powerBank '+flag.room.powerBank + ' hits '+flag.room.powerBank.hits + 'power ' +flag.room.powerBank.power)
-    if(haulerCount < maxHaulers && (flag && flag.room.powerBank && flag.room.powerBank.hits < 100000)) {
+    	console.log('haulerCount '+haulerCount+' flag '+flag+' flag.room.powerBank '+flag.room.powerBank + ' hits '+flag.room.powerBank.hits + 'power ' +flag.room.powerBank.power + 'haulers ' + haulerCount)
+    if(haulerCount < maxHaulers && (flag && flag.room.powerBank && flag.room.powerBank.hits < 650000)) {
         for(let i = haulerCount; i < maxHaulers; i++) {
             const spawnRoom = mod.strategies.hauler.spawnRoom(roomName);
             if( !spawnRoom ) break;

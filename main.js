@@ -176,7 +176,7 @@ global.install = () => {
             reallocating:load("creep.action.reallocating"),
             recycling:load("creep.action.recycling"),
             attackController:load("creep.action.attackController"),
-            powerMine:load("creep.action.powerMine")
+            pickPower:load("creep.action.pickPower")
         },
         behaviour: {
             claimer: load("creep.behaviour.claimer"),

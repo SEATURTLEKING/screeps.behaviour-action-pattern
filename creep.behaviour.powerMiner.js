@@ -37,32 +37,34 @@ mod.nextAction = function(creep) {
     let attacking = creep.attack(target);
     //let powerHealer = Game.creeps[Creep.prototype.findGroupMemberByType("powerHealer", creep.data.flagName)];
     console.log('target ' + target + ' healercount ' + healerCount )
+    if(  target && !attackTarget ) {
+        if( creep.pos.roomName === target.pos.roomName ){
+            //once complete recycle 
+           return Creep.action.recycling.assign(creep);
+        }
+    }
     if( !target ) {
         return Creep.action.recycling.assign(creep);
     } else if( healerCount < 2 ) {
         if( creep.pos.roomName != creep.data.homeRoom ) {
-            return Creep.action.travelling.assignRoom(creep, creep.data.homeRoom);
+            return Creep.action.travelling.assign(creep, creep.data.homeRoom);
         } else {
             return Creep.action.idle.assign(creep);
         }
     } else if( creep.pos.roomName === target.pos.roomName ) {
-            if( attackTarget && creep.pos.getRangeTo(attackTarget) < 2 )  
+            if( attackTarget && (creep.pos.getRangeTo(attackTarget) < 2 )){  
                 creep.attacking = creep.attack(attackTarget) == OK;
                 Creep.action.idle.assign(creep);
                 return;
                 //Creep.action.powerMine.assign(creep, FIND_HOSTILE_STRUCTURES);
+            }
     }
     if( creep.pos.getRangeTo(target) > 1 ) {
         return Creep.action.travelling.assign(creep, target);
     } else {
         Creep.action.idle.assign(creep);
     }
-    if( !attackTarget ) {
-        if( creep.pos.roomName === target.pos.roomName ){
-            //once complete, delete flag and recycle 
-            target.remove();
-        }
-    }
+    
 };
 mod.strategies = {
     defaultStrategy: {

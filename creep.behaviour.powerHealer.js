@@ -40,7 +40,7 @@ mod.nextAction = function(creep){
         Creep.action.recycling.assign(creep);
     } else if( !target ){
         if(creep.pos.roomName != creep.data.homeRoom) {
-            return Creep.action.travelling.assignRoom(creep, creep.data.homeRoom);
+            return Creep.action.travelling.assign(creep, creep.data.homeRoom);
         } else {
             return Creep.action.idle.assign(creep);
         }
