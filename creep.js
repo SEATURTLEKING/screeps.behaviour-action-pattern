@@ -47,10 +47,10 @@ mod.extend = function(){
             }
             this.repairNearby();
             if( DEBUG && TRACE ) trace('Creep', {creepName:this.name, pos:this.pos, Behaviour: behaviour && behaviour.name, Creep:'run'});
-            let p = startProfiling(this.name);
             if( behaviour ) {
+                let p = startProfiling(this.name);
                 behaviour.run(this);
-                p.checkCPU('behaviour.run', 5);
+                p.checkCPU('behaviour.run', 5, this.data.creepType);
             } else if(!this.data){
                 if( DEBUG && TRACE ) trace('Creep', {creepName:this.name, pos:this.pos, Creep:'run'}, 'memory init');
                 let type = this.memory.setup;

@@ -405,12 +405,18 @@ mod.startProfiling = function(label) {
         let start = Game.cpu.getUsed();
         let _total = 0;
         return {
-            checkCPU: (name, limit) => {
+            checkCPU: (name, limit, type) => {
                 limit = limit ? limit : 0.1;
                 const now = Game.cpu.getUsed();
                 const used = now - start;
                 _total += used;
                 start = now;
+                if (type) {
+                    if (_.isUndefined(Memory.profiling.types)) Memory.profiling.types = {};
+                    if (_.isUndefined(Memory.profiling.types[type])) Memory.profiling.types[type] = {total: 0, count: 0};
+                    Memory.profiling.types[type].total += used;
+                    Memory.profiling.types[type].count++;
+                }
                 if (used > limit) {
                     global.logSystem(label + ' ' + name, 'used ' + _.round(used, 2) + ' CPU');
                     return true;
@@ -425,6 +431,10 @@ mod.startProfiling = function(label) {
                 const avg = Memory.profiling.totalCPU / Memory.profiling.ticks;
                 if (ticks % 100 === 0) Memory.profiling.avgCPU[ticks] = avg;
                 Memory.profiling.avgCPU.current = avg;
+                for (let type in Memory.profiling.types) {
+                    let data = Memory.profiling.types[type];
+                    global.logSystem(type, ':', data.total / data.count, '(avg)', data.count, '(count)');
+                }
                 global.logSystem(label + ' total ', _.round(_total, 2) + ' CPU' + ' ' + avg + ' AVG(' + ticks + ' ticks)');
                 console.log('\n');
             }

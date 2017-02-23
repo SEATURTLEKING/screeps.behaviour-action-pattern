@@ -8,7 +8,7 @@ mod.approach = function(creep){
         creep.drive( targetPos, 0, 0, range );
     return range;
 };
-mod.run = function(creep) {
+mod.run = function(creep, params = {}) {
     let source;
     if( !creep.data.determinatedTarget ) { // select source
         let notDeterminated = source => {
@@ -26,6 +26,7 @@ mod.run = function(creep) {
     }
 
     if( source ) {
+        let carrying = creep.sum;
         if (!creep.action || creep.action.name !== 'harvesting') Population.registerAction(creep, Creep.action.harvesting, source);
         if( !creep.data.determinatedSpot ) {
             let args = {
