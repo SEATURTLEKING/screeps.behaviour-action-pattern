@@ -82,8 +82,42 @@ mod.run = function(creep) {
         }
 
         if( creep.data.determinatedSpot ) {
-            let carrying = creep.sum;
-            if( source.link && source.link.energy < source.link.energyCapacity ) {
+            const energyPerHarvest = creep => creep.data.body && creep.data.body.work ? (creep.data.body.work*2) : (creep.carryCapacity/2);
+            if( source.energy === 0 ) {
+                const carryThreshold = (creep.data.body&&creep.data.body.work ? (creep.data.body.work*5) : (creep.carryCapacity/2));
+                if( creep.carry.energy <= carryThreshold ) {
+                    const dropped = creep.pos.findInRange(FIND_DROPPED_ENERGY, 1);
+                    if (dropped.length) {
+                        if(CHATTY) creep.say('picking', SAY_PUBLIC);
+                        creep.pickup(dropped[0]);
+                    } else if (source.container && source.container.sum > 0) {
+                        if(CHATTY) creep.say('withdraw cont', SAY_PUBLIC);
+                        creep.withdraw(source.container, RESOURCE_ENERGY);
+                    } else if (!params.remote && source.link && source.link.energy > 0) {
+                        if(CHATTY) creep.say('withdraw link', SAY_PUBLIC);
+                        creep.withdraw(source.link, RESOURCE_ENERGY);
+                    } else if (creep.carry.energy === 0) {
+                        if(CHATTY) creep.say('waiting', SAY_PUBLIC);
+                        return; // idle
+                    }
+                    if (creep.carry.energy === 0) return; // we need at least some energy to do both in the same tick.
+                }
+                let s = startProfiling(creep.name, 'minerRepair');
+                const targets = params.remote ? creep.room.structures.repairable : creep.room.structures.fortifyable;
+                const repairs = creep.pos.findInRange(targets, 3);
+                s.checkCPU('', 0.5);
+                if (repairs.length) {
+                    if(CHATTY) creep.say('repairing', SAY_PUBLIC);
+                    return creep.repair(repairs[0]);
+                }
+                const sites = creep.pos.findInRange(creep.room.constructionSites, 3);
+                if (sites.length) {
+                    if(CHATTY) creep.say('building', SAY_PUBLIC);
+                    return creep.build(sites[0]);
+                }
+                if(CHATTY) creep.say('waiting', SAY_PUBLIC);
+                return; // idle
+            } else if( !params.remote && source.link && source.link.energy < source.link.energyCapacity ) {
                 if(CHATTY) creep.say('harvesting', SAY_PUBLIC);
                 let range = this.approach(creep);
                 if( range == 0 ){

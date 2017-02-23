@@ -23,7 +23,7 @@ mod.run = function(creep) {
         creep.data.creepType='recycler';
         return;
     }
-    if( !creep.action ) Population.registerAction(creep, Creep.action.upgrading, creep.room.controller);
+    let p = startProfiling(creep.name + ' Upgrader.run');
     if( !creep.data.determinatedSpot ) {
         let determineSpots = (ignoreSources=false) => {
             let spots = [];
@@ -86,6 +86,7 @@ mod.run = function(creep) {
         }
         if( !creep.data.determinatedSpot ) logError('Unable to determine working location for upgrader in room ' + creep.pos.roomName);
         else if( SAY_ASSIGNMENT ) creep.say(String.fromCharCode(9962), SAY_PUBLIC);
+        p.checkCPU('!determinated', 1);
     }
     if( creep.data.determinatedSpot ) {
         if(CHATTY) creep.say('upgrading', SAY_PUBLIC);
@@ -107,5 +108,6 @@ mod.run = function(creep) {
             creep.controllerSign();
             creep.upgradeController(creep.room.controller);
         }
+        p.checkCPU('determinated', 1);
     }
 };

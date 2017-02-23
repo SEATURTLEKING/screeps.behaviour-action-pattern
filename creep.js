@@ -296,6 +296,7 @@ mod.extend = function(){
             this.move(this.pos.getDirectionTo(new RoomPosition(path[0].x,path[0].y,path[0].roomName)));
     };
     Creep.prototype.idleMove = function( ) {
+        let p = startProfiling('Creep.idleMove');
         if( this.fatigue > 0 ) return;
         // check if on road/structure
         let here = _.chain(this.room.structures.piles).filter('pos', this.pos)
@@ -332,6 +333,7 @@ mod.extend = function(){
             if( path && path.length > 0 )
                 this.move(this.pos.getDirectionTo(new RoomPosition(path[0].x,path[0].y,path[0].roomName)));
         }
+        p.checkCPU(this.name, 1);
     };
     Creep.prototype.repairNearby = function( ) {
         let p = startProfiling('repairNearby');
