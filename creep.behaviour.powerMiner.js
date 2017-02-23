@@ -13,6 +13,7 @@ mod.run = function(creep) {
 };
 mod.nextAction = function(creep) {
     let target = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos, false);
+    let attackTarget = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, { filter: (structure) => { return structure.structureType == STRUCTURE_POWER_BANK;}});
     const roomName = creep.data.destiny.room;
     let memory = Task.powerMining.memory(roomName);
     Population.registerCreepFlag(creep, target);
@@ -45,7 +46,8 @@ mod.nextAction = function(creep) {
             return Creep.action.idle.assign(creep);
         }
     } else if( creep.pos.roomName === target.pos.roomName ) {
-             if( creep.pos.getRangeTo(target) < 1 ) return Creep.action.powerMine.assign(creep, target);
+             if( creep.pos.getRangeTo(target) < 2 ) return creep.attacking = creep.attack(attackTarget) == OK;
+             // use action Creep.action.powerMine.assign(creep, target);
     }
     if( creep.pos.getRangeTo(target) > 1 ) {
         return Creep.action.travelling.assign(creep, target);
