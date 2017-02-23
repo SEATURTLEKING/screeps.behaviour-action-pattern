@@ -44,12 +44,12 @@ mod.nextAction = function(creep){
         }
     }
     // at target room
+    else if( creep.data.destiny.room == creep.pos.roomName ){
             let flag = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos, true);
             let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => { 
                     return structure.structureType == STRUCTURE_POWER_BANK;
                 }});
-    else if( creep.data.destiny.room == creep.pos.roomName ){
         // TODO: This should perhaps check which distance is greater and make this decision based on that plus its load size
         if( creep.sum / creep.carryCapacity > 0.1) {
             this.goHome(creep);
