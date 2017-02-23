@@ -21,12 +21,9 @@ mod.nextAction = function(creep){
         // carrier filled
         if( creep.sum > 0 ){
             let deposit = []; // deposit energy in...
-            // links?
-            if( creep.carry.energy == creep.sum ) deposit = creep.room.structures.links.privateers;
             // storage?
             if( creep.room.storage ) deposit.push(creep.room.storage);
-            // containers?
-            if( creep.room.structures.container ) deposit = deposit.concat( creep.room.structures.container.privateers );
+            
             // Choose the closest
             if( deposit.length > 0 ){
                 let target = creep.pos.findClosestByRange(deposit);

@@ -140,7 +140,7 @@ mod.checkForRequiredCreeps = (flag) => {
     let memory = Task.powerMining.memory(roomName);
 
     // get number of sources
-    let trainCount = 1;
+    let trainCount = 2;
    
     // do we need to validate our spawning entries?
     for (const type of ['powerHauler', 'powerMiner', 'powerHealer']) {
@@ -227,8 +227,9 @@ mod.checkForRequiredCreeps = (flag) => {
 
     // only spawn haulers when powerbank hits are lower than 100k
     // (flag && flag.room.powerBank && flag.room.powerBank.hits < 100000)
-    let maxHaulers = 0;
-    if(flag){
+    let maxHaulers = 3;
+    if(flag.room){
+    	console.log('haulerCount '+haulerCount+' flag '+flag+' flag.room.powerBank '+flag.room.powerBank + ' hits '+flag.room.powerBank.hits + 'power ' +flag.room.powerBank.power)
     if(haulerCount < maxHaulers && (flag && flag.room.powerBank && flag.room.powerBank.hits < 100000)) {
         for(let i = haulerCount; i < maxHaulers; i++) {
             const spawnRoom = mod.strategies.hauler.spawnRoom(roomName);
@@ -259,9 +260,7 @@ mod.checkForRequiredCreeps = (flag) => {
                 }
             );
         }
-    }
-    }
-    
+    }}    
 };
 mod.findSpawning = (roomName, type) => {
     let spawning = [];
@@ -333,7 +332,7 @@ mod.memory = key => {
 };
 mod.creep = {
     miner: {
-        fixedBody: [ATTACK, MOVE],
+        fixedBody: [ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE],
         multiBody: [],
         maxMulti: 24,
         behaviour: 'powerMiner',
@@ -346,7 +345,7 @@ mod.creep = {
         queue: 'Medium'
     },
     healer: {
-        fixedBody: [MOVE, HEAL],
+        fixedBody: [MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL],
         multiBody: [], 
         behaviour: 'powerHealer',
         queue: 'Medium'

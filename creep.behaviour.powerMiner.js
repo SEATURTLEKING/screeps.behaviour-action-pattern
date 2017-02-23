@@ -46,13 +46,22 @@ mod.nextAction = function(creep) {
             return Creep.action.idle.assign(creep);
         }
     } else if( creep.pos.roomName === target.pos.roomName ) {
-             if( creep.pos.getRangeTo(target) < 2 ) return creep.attacking = creep.attack(attackTarget) == OK;
-             // use action Creep.action.powerMine.assign(creep, target);
+            if( attackTarget && creep.pos.getRangeTo(attackTarget) < 2 )  
+                creep.attacking = creep.attack(attackTarget) == OK;
+                Creep.action.idle.assign(creep);
+                return;
+                //Creep.action.powerMine.assign(creep, FIND_HOSTILE_STRUCTURES);
     }
     if( creep.pos.getRangeTo(target) > 1 ) {
         return Creep.action.travelling.assign(creep, target);
     } else {
         Creep.action.idle.assign(creep);
+    }
+    if( !attackTarget ) {
+        if( creep.pos.roomName === target.pos.roomName ){
+            //once complete, delete flag and recycle 
+            target.remove();
+        }
     }
 };
 mod.strategies = {
