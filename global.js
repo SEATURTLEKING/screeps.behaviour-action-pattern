@@ -433,7 +433,7 @@ mod.startProfiling = function(label) {
                 Memory.profiling.avgCPU.current = avg;
                 for (let type in Memory.profiling.types) {
                     let data = Memory.profiling.types[type];
-                    global.logSystem(type, ':', data.total / data.count, '(avg)', data.count, '(count)');
+                    global.logSystem(type + ': ', data.total / data.count + '(avg) ' + data.count + '(count)');
                 }
                 global.logSystem(label + ' total ', _.round(_total, 2) + ' CPU' + ' ' + avg + ' AVG(' + ticks + ' ticks)');
                 console.log('\n');
