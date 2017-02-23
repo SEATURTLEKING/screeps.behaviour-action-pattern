@@ -228,7 +228,7 @@ mod.checkForRequiredCreeps = (flag) => {
     // (flag && flag.room.powerBank && flag.room.powerBank.hits < 100000)
    
     if(flag.room){
-    	 let maxHaulers = 3 || Math.ceil(flag.room.powerBank.power / 1250);
+    	 let maxHaulers = Math.ceil(flag.room.powerBank.power / 1250);
     	//console.log('haulerCount '+haulerCount+' flag '+flag+' flag.room.powerBank '+flag.room.powerBank + ' hits '+flag.room.powerBank.hits + 'power ' +flag.room.powerBank.power + 'haulers ' + haulerCount)
     if(haulerCount < maxHaulers && (flag && flag.room.powerBank && flag.room.powerBank.hits < 650000)) {
         for(let i = haulerCount; i < maxHaulers; i++) {
