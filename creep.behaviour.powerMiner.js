@@ -36,7 +36,7 @@ mod.nextAction = function(creep) {
     let healerCount = countExisting('powerHealer');
     let attacking = creep.attack(target);
     //let powerHealer = Game.creeps[Creep.prototype.findGroupMemberByType("powerHealer", creep.data.flagName)];
-    console.log('target ' + target + ' healercount ' + healerCount )
+   // console.log('target ' + target + ' healercount ' + healerCount )
     if(  target && !attackTarget ) {
         if( creep.pos.roomName === target.pos.roomName ){
             //once complete recycle 
