@@ -150,7 +150,9 @@ global.install = () => {
     Creep.Setup = load("creep.Setup");
     _.assign(Creep, {
         action: {
-            building: load("creep.action.building"), 
+            attackController: load("creep.action.attackController"),
+            avoiding: load("creep.action.avoiding"),
+            building: load("creep.action.building"),
             charging: load("creep.action.charging"),
             claiming: load("creep.action.claiming"),
             defending: load("creep.action.defending"),
@@ -164,19 +166,18 @@ global.install = () => {
             healing: load("creep.action.healing"),
             idle: load("creep.action.idle"),
             invading: load("creep.action.invading"),
-            picking: load("creep.action.picking"), 
-            repairing: load("creep.action.repairing"), 
+            picking: load("creep.action.picking"),
+            pickPower:load("creep.action.pickPower"),
+            reallocating:load("creep.action.reallocating"),
+            recycling:load("creep.action.recycling"),
+            repairing: load("creep.action.repairing"),
             reserving: load("creep.action.reserving"),
-            travelling: load("creep.action.travelling"), 
-            storing: load("creep.action.storing"), 
+            robbing:load("creep.action.robbing"),
+            storing: load("creep.action.storing"),
+            travelling: load("creep.action.travelling"),
             uncharging: load("creep.action.uncharging"),
             upgrading: load("creep.action.upgrading"), 
             withdrawing: load("creep.action.withdrawing"),
-            robbing:load("creep.action.robbing"),
-            reallocating:load("creep.action.reallocating"),
-            recycling:load("creep.action.recycling"),
-            attackController:load("creep.action.attackController"),
-            pickPower:load("creep.action.pickPower")
         },
         behaviour: {
             claimer: load("creep.behaviour.claimer"),
