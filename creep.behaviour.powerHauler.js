@@ -44,8 +44,10 @@ mod.nextAction = function(creep){
         }
     }
     // at target room
+
+            
     else if( creep.data.destiny.room == creep.pos.roomName ){
-            let flag = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos, true);
+        let flag = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos, true);
             let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => { 
                     return structure.structureType == STRUCTURE_POWER_BANK;
@@ -60,7 +62,15 @@ mod.nextAction = function(creep){
         if( this.assign(creep, Creep.action.pickPower) ) return;
         // wait
         if ( creep.sum === 0 ) {
-            if (creep.room && source && creep.pos.getRangeTo(source) > 4) {
+            let flag = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos, true);
+            let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => { 
+                    return structure.structureType == STRUCTURE_POWER_BANK;
+                }});
+            //console.log('distance ' + creep.pos.getRangeTo(source))
+
+            if (creep.room && source && creep.pos.getRangeTo(source) > 3) {
+              //  console.log('distance ' + creep.pos.getRangeTo(source))
                 creep.moveTo(source);
                 return Creep.action.travelling.assign(creep, source);
             }

@@ -139,7 +139,7 @@ mod.checkForRequiredCreeps = (flag) => {
     // Prevents accidentally processing same room multiple times if flags > 1
     let memory = Task.powerMining.memory(roomName);
 
-    let trainCount = 2;
+    let trainCount = 1;
    
     // do we need to validate our spawning entries?
     for (const type of ['powerHauler', 'powerMiner', 'powerHealer']) {
@@ -170,6 +170,8 @@ mod.checkForRequiredCreeps = (flag) => {
     let healerCount = countExisting('powerHealer');
 
     if( DEBUG && TRACE ) trace('Task', {Task:mod.name, flagName:flag.name, trainCount, haulerCount, minerCount, healerCount, [mod.name]:'Flag.found'}, 'checking flag@', flag.pos);
+
+    if ( minerCount > 0 ) trainCount = 2;
 
     if(minerCount < trainCount) {
         if( DEBUG && TRACE ) trace('Task', {Task:mod.name, room:roomName, minerCount,
