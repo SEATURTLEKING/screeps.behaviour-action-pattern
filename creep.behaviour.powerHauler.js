@@ -44,39 +44,24 @@ mod.nextAction = function(creep){
         }
     }
     // at target room
-
-            
-    else if( creep.data.destiny.room == creep.pos.roomName ){
-        let flag = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos, true);
-            let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (structure) => { 
-                    return structure.structureType == STRUCTURE_POWER_BANK;
-                }});
+ else if( creep.data.destiny.room == creep.pos.roomName ){
         // TODO: This should perhaps check which distance is greater and make this decision based on that plus its load size
         if( creep.sum / creep.carryCapacity > 0.1) {
             this.goHome(creep);
-            flag.remove();
             return;
         }
+        // picking last until we have strategies that can compare cost vs benefit otherwise remoteHaulers bounce between piles of dropped energy
+        //if( this.assign(creep, Creep.action.uncharging) ) return;
         // if( this.assign(creep, Creep.action.robbing) ) return;
         if( this.assign(creep, Creep.action.pickPower) ) return;
         // wait
         if ( creep.sum === 0 ) {
-            let flag = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos, true);
-            let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (structure) => { 
-                    return structure.structureType == STRUCTURE_POWER_BANK;
-                }});
-            //console.log('distance ' + creep.pos.getRangeTo(source))
-
-            if (creep.room && source && creep.pos.getRangeTo(source) > 3) {
-              //  console.log('distance ' + creep.pos.getRangeTo(source))
-                creep.moveTo(source);
-                return Creep.action.travelling.assign(creep, source);
+            let target = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos, true);
+            if (creep.room && target && creep.pos.getRangeTo(target) > 3) {
+                creep.moveTo(target);
+                return Creep.action.travelling.assign(creep, target);
             }
-
         }
-
         return this.assign(creep, Creep.action.idle);
     }
     // somewhere
