@@ -6,7 +6,8 @@ mod.run = function(creep) {
     if (!creep.action || creep.action.name === 'idle') this.nextAction(creep);
     // Do some work
     if( creep.action ) {
-        creep.action.step(creep);
+        const roomName = creep.pos.roomName;
+            creep.action.step(creep);
     } else {
         logError('Creep without action/activity!\nCreep: ' + creep.name + '\ndata: ' + JSON.stringify(creep.data));
     }
@@ -40,14 +41,15 @@ mod.nextAction = function(creep) {
     if(  target && !attackTarget ) {
         if( creep.pos.roomName === target.pos.roomName ){
             //once complete recycle 
+            target.remove();
            return Creep.action.recycling.assign(creep);
         }
     }
     if( !target ) {
         return Creep.action.recycling.assign(creep);
-    } else if( healerCount < 2 ) {
+    } else if( healerCount < 2 )  {
         if( creep.pos.roomName != creep.data.homeRoom ) {
-            return Creep.action.travelling.assign(creep, creep.data.homeRoom);
+            return Creep.action.idle.assign(creep); // Creep.action.travelling.assign(creep, creep.data.homeRoom);
         } else {
             return Creep.action.idle.assign(creep);
         }

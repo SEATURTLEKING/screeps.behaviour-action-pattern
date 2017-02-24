@@ -35,18 +35,19 @@ mod.nextAction = function(creep){
 
     Population.registerCreepFlag(creep, flag);
 
-    let target = Game.creeps[Creep.prototype.findGroupMemberByType("powerMiner", creep.data.flagName)];
+ 
+    let target = flag; //Game.creeps[Creep.prototype.findGroupMemberByType("powerMiner", creep.data.flagName)];
 
     if( !flag ){
         Creep.action.recycling.assign(creep);
     } else if( !target ){
         if(creep.pos.roomName != creep.data.homeRoom) {
-            return Creep.action.travelling.assign(creep, creep.data.homeRoom);
+            return Creep.action.idle.assign(creep); //Creep.action.travelling.assign(creep, creep.data.homeRoom);
         } else {
             return Creep.action.idle.assign(creep);
         }
     } else {
-        if(creep.pos.getRangeTo(target) > 3){
+        if(creep.pos.getRangeTo(target) > 2){
             creep.data.ignoreCreeps = false;
             return Creep.action.travelling.assign(creep, target);
         }

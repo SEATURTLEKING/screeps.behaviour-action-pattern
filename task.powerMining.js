@@ -171,7 +171,6 @@ mod.checkForRequiredCreeps = (flag) => {
 
     if( DEBUG && TRACE ) trace('Task', {Task:mod.name, flagName:flag.name, trainCount, haulerCount, minerCount, healerCount, [mod.name]:'Flag.found'}, 'checking flag@', flag.pos);
 
-    if ( minerCount > 0 ) trainCount = 2;
 
     if(minerCount < trainCount) {
         if( DEBUG && TRACE ) trace('Task', {Task:mod.name, room:roomName, minerCount,
@@ -232,12 +231,12 @@ mod.checkForRequiredCreeps = (flag) => {
     if(flag.room){
     	 let maxHaulers = Math.ceil(flag.room.powerBank.power / 1250);
     	//console.log('haulerCount '+haulerCount+' flag '+flag+' flag.room.powerBank '+flag.room.powerBank + ' hits '+flag.room.powerBank.hits + 'power ' +flag.room.powerBank.power + 'haulers ' + haulerCount)
-    if(haulerCount < maxHaulers && (flag && flag.room.powerBank && flag.room.powerBank.hits < 650000)) {
+    if(haulerCount < maxHaulers && (flag && flag.room.powerBank && flag.room.powerBank.hits < 500000)) {
         for(let i = haulerCount; i < maxHaulers; i++) {
             const spawnRoom = mod.strategies.hauler.spawnRoom(roomName);
             if( !spawnRoom ) break;
 
-            const storageRoom = mod.strategies.hauler.homeRoom(roomName) || spawnRoom;
+            const storageRoom = mod.strategies.hauler.spawnRoom(roomName) || spawnRoom;
 
             // spawning a new hauler
             const creepDefinition = _.create(Task.powerMining.creep.hauler);
@@ -341,8 +340,8 @@ mod.creep = {
         queue: 'Medium' // power needs to be high ish priority as there is a time limit.
     },
     hauler: {
-        fixedBody: [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, WORK],
-        multiBody: [CARRY, CARRY, MOVE],
+        fixedBody: [CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE],
+        multiBody: [],
         behaviour: 'powerHauler',
         queue: 'Medium'
     },
