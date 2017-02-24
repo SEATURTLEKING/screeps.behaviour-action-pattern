@@ -31,6 +31,7 @@ mod.run = function(creep) {
 };
 mod.nextAction = function(creep){
     let flag = FlagDir.find(FLAG_COLOR.invade.powerMining, creep.pos, false);
+    let homeRoom = creep.data.homeRoom;
 
     Population.registerCreepFlag(creep, flag);
 
@@ -45,8 +46,11 @@ mod.nextAction = function(creep){
             return Creep.action.idle.assign(creep);
         }
     } else {
-        creep.data.ignoreCreeps = false;
-        return Creep.action.travelling.assign(creep, target);
+        if(creep.pos.getRangeTo(target) > 3){
+            creep.data.ignoreCreeps = false;
+            return Creep.action.travelling.assign(creep, target);
+        }
+        return Creep.action.idle.assign(creep);
     }
 };
 mod.strategies = {
