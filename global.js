@@ -404,6 +404,7 @@ mod.startProfiling = function(label) {
         label = label ? label : '';
         let start = Game.cpu.getUsed();
         let _total = 0;
+        const PAD_HEADING = 30;
         return {
             checkCPU: (name, limit, type) => {
                 limit = limit ? limit : 0.1;
@@ -413,7 +414,7 @@ mod.startProfiling = function(label) {
                 start = now;
                 if (type) {
                     if (_.isUndefined(Memory.profiling.types)) Memory.profiling.types = {};
-                    if (_.isUndefined(Memory.profiling.types[type])) Memory.profiling.types[type] = {total: 0, count: 0};
+                    if (_.isUndefined(Memory.profiling.types[type])) Memory.profiling.types[type] = {total: 0, totalCount: 0, count: 0};
                     Memory.profiling.types[type].total += used;
                     Memory.profiling.types[type].count++;
                 }
@@ -431,12 +432,23 @@ mod.startProfiling = function(label) {
                 const avg = _.round(Memory.profiling.totalCPU / Memory.profiling.ticks, 3);
                 if (ticks % 100 === 0) Memory.profiling.avgCPU[ticks] = avg;
                 Memory.profiling.avgCPU.current = avg;
-                for (let type in Memory.profiling.types) {
-                    let data = Memory.profiling.types[type];
-                    const typeAvg = _.round(data.total / data.count, 3);
-                    global.logSystem(type + ': ', typeAvg + '(avg) ' + data.count + '(executions)');
+                if (_.length(Memory.profiling.types) > 0) {
+                    let heading = '';
+                    while (heading.length < PAD_HEADING) heading += ' ';
+                    global.logSystem(heading, '(avg/creep/tick) (active) (weighted avg) (executions)');
+                    for (let type in Memory.profiling.types) {
+                        let data = Memory.profiling.types[type];
+                        data.totalCount += data.count;
+                        const typeAvg = _.round(data.total / data.totalCount, 3);
+                        let heading = type + ': ';
+                        while (heading.length < 30) heading += ' ';
+                        global.logSystem(heading, '' + typeAvg + data.count + (_.round(typeAvg * data.count, 3)) + data.totalCount );
+                        data.count = 0;
+                    }
                 }
-                global.logSystem(label + ' total ', _.round(_total, 2) + ' CPU' + ' ' + avg + ' AVG (' + ticks + ' ticks)');
+                let heading = label + ' total ';
+                while (heading.length < 30) heading += ' ';
+                global.logSystem(heading, _.round(_total, 2) + ' CPU' + ' ' + avg + ' AVG (' + ticks + ' ticks)');
                 console.log('\n');
             }
         };
