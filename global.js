@@ -428,14 +428,15 @@ mod.startProfiling = function(label) {
                 if (_.isUndefined(Memory.profiling)) Memory.profiling = {ticks: 0, totalCPU: 0, avgCPU: {}};
                 const ticks = ++Memory.profiling.ticks;
                 const totalCPU = (Memory.profiling.totalCPU += _total);
-                const avg = Memory.profiling.totalCPU / Memory.profiling.ticks;
+                const avg = _.round(Memory.profiling.totalCPU / Memory.profiling.ticks, 3);
                 if (ticks % 100 === 0) Memory.profiling.avgCPU[ticks] = avg;
                 Memory.profiling.avgCPU.current = avg;
                 for (let type in Memory.profiling.types) {
                     let data = Memory.profiling.types[type];
-                    global.logSystem(type + ': ', data.total / data.count + '(avg) ' + data.count + '(count)');
+                    const typeAvg = _.round(data.total / data.count, 3);
+                    global.logSystem(type + ': ', typeAvg + '(avg) ' + data.count + '(executions)');
                 }
-                global.logSystem(label + ' total ', _.round(_total, 2) + ' CPU' + ' ' + avg + ' AVG(' + ticks + ' ticks)');
+                global.logSystem(label + ' total ', _.round(_total, 2) + ' CPU' + ' ' + avg + ' AVG (' + ticks + ' ticks)');
                 console.log('\n');
             }
         };

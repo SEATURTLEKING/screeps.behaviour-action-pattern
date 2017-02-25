@@ -45,12 +45,11 @@ mod.extend = function(){
                     return;
                 }
             }
+            let p = startProfiling(this.name);
             this.repairNearby();
             if( DEBUG && TRACE ) trace('Creep', {creepName:this.name, pos:this.pos, Behaviour: behaviour && behaviour.name, Creep:'run'});
             if( behaviour ) {
-                let p = startProfiling(this.name);
                 behaviour.run(this);
-                p.checkCPU('behaviour.run', 5, this.data.creepType);
             } else if(!this.data){
                 if( DEBUG && TRACE ) trace('Creep', {creepName:this.name, pos:this.pos, Creep:'run'}, 'memory init');
                 let type = this.memory.setup;
@@ -97,12 +96,12 @@ mod.extend = function(){
                         Population.countCreep(this.room, entry);
                     } else this.suicide();
                 }
-                p.checkCPU('!this.data');
             }
             if( this.flee ) {
                 this.fleeMove();
                 if( SAY_ASSIGNMENT ) this.say(String.fromCharCode(10133), SAY_PUBLIC);
             }
+            p.checkCPU('creep.run', 3, this.data.creepType);
         }
 
         strategy.freeStrategy(this);

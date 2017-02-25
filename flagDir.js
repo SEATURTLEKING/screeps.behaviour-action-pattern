@@ -169,8 +169,9 @@ mod.execute = function() {
     let triggerFound = entry => {
         if( !entry.cloaking || entry.cloaking == 0) {
             let p = startProfiling('Flag.execute');
-            Flag.found.trigger(Game.flags[entry.name]);
-            p.checkCPU(entry.name, 2);
+            const flag = Game.flags[entry.name];
+            Flag.found.trigger(flag);
+            p.checkCPU(entry.name, 2, mod.flagType(flag));
         }
     };
     this.list.forEach(triggerFound);
