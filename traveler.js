@@ -341,7 +341,7 @@ module.exports = function(globalOpts = {}){
             let offsetY = [0, -1, -1, 0, 1, 1, 1, 0, -1];
             return new RoomPosition(origin.x + offsetX[direction], origin.y + offsetY[direction], origin.roomName);
         }
-    }    
+    }
 
     if(gOpts.installTraveler){
         global.Traveler = Traveler;
@@ -364,6 +364,7 @@ module.exports = function(globalOpts = {}){
             if (_.isUndefined(options.preferHighway)) options.preferHighway = true;
             if (_.isUndefined(options.allowHostile)) options.allowHostile = false;
             if (_.isUndefined(options.routeCallback)) options.routeCallback = Room.routeCallback(destination.roomName, options.allowHostile, options.preferHighway);
+            if (_.isUndefined(options.useFindRoute)) options.useFindRoute = global.ROUTE_PRECALCULATION;
             return traveler.travelTo(this, destination, options);
         };
     }
