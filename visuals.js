@@ -66,6 +66,100 @@ module.exports = class Visuals {
 				Visuals.drawCreepPath(room);
 			}
 		}
+		if (VISUALS.ROOM_GLOBAL) {
+			if (VISUALS.CPU) {
+				Visuals.collectSparklineStats();
+			}
+			Visuals.drawGlobal();
+		}
+	}
+	
+	static drawGlobal() {
+		const vis = new RoomVisual();
+		const bufferWidth = 1;
+		const sectionWidth = 49 / 5;
+		const BAR_STYLE = {fill: '#2B2B2B', opacity: 0.8, stroke: '#000000',};
+		
+		let x = bufferWidth;
+		const y = 2;
+		if (VISUALS.ROOM) {
+			// GCL
+			x = bufferWidth * 2 + sectionWidth;
+			vis.rect(x, y - 0.75, sectionWidth, 1, BAR_STYLE);
+			const GCL_PERCENTAGE = Game.gcl.progress / Game.gcl.progressTotal;
+			vis.rect(x, y - 0.75, GCL_PERCENTAGE * sectionWidth, 1, {
+				fill: getColourByPercentage(GCL_PERCENTAGE, true),
+				opacity: BAR_STYLE.opacity
+			});
+			vis.text(`GCL: ${Game.gcl.level} (${(GCL_PERCENTAGE * 100).toFixed(2)}%)`, x + sectionWidth / 2, y);
+			
+			// CPU
+			x += sectionWidth + bufferWidth;
+			vis.rect(x, y - 0.75, sectionWidth, 1, BAR_STYLE);
+			const CPU_PERCENTAGE = Game.cpu.getUsed() / Game.cpu.limit;
+			const FUNCTIONAL_CPU_PERCENTAGE = CPU_PERCENTAGE > 1 ? 1 : CPU_PERCENTAGE;
+			vis.rect(x, y - 0.75, FUNCTIONAL_CPU_PERCENTAGE * sectionWidth, 1, {
+				fill: getColourByPercentage(FUNCTIONAL_CPU_PERCENTAGE),
+				opacity: BAR_STYLE.opacity
+			});
+			vis.text(`CPU: ${(CPU_PERCENTAGE * 100).toFixed(2)}%`, x + sectionWidth / 2, y);
+			
+			// Bucket
+			x += sectionWidth + bufferWidth;
+			vis.rect(x, y - 0.75, sectionWidth, 1, BAR_STYLE);
+			const BUCKET_PERCENTAGE = Game.cpu.bucket / 10000;
+			vis.rect(x, y - 0.75, BUCKET_PERCENTAGE * sectionWidth, 1, {
+				fill: getColourByPercentage(BUCKET_PERCENTAGE, true),
+				opacity: BAR_STYLE.opacity
+			});
+			vis.text(`Bucket: ${Game.cpu.bucket}`, x + sectionWidth / 2, y);
+			
+			// Tick
+			x += sectionWidth + bufferWidth;
+			vis.text(`Tick: ${Game.time}`, x, y, {align: 'left'});
+		}
+		if (VISUALS.CPU) {
+			Visuals.drawSparkline(undefined, 1.5, 46.5, 20, 2, _.map(Memory.visualStats.cpu, (v, i) => Memory.visualStats.cpu[i]), [{
+				key: 'limit',
+				min: Game.cpu.limit * 0.5,
+				max: Game.cpu.limit * 1.5,
+				stroke: '#808080',
+				opacity: 0.25,
+			}, {
+				key: 'cpu',
+				min: Game.cpu.limit * 0.5,
+				max: Game.cpu.limit * 1.5,
+				stroke: '#FFFF00',
+				opacity: 0.5,
+			}, {
+				key: 'bucket',
+				min: 0,
+				max: 10000,
+				stroke: '#00FFFF',
+				opacity: 0.5,
+			}]);
+		}
+	}
+	
+	static drawSparkline(room, x, y, w, h, values, options) {
+		const vis = room ? new RoomVisual(room) : new RoomVisual();
+		_.forEach(options, option => {
+			vis.poly(_.map(values, (v, i) => [x + w * (i / (values.length - 1)), y + h * (1 - (v[option.key] - option.min) / (option.max - option.min))]), option);
+		});
+	}
+	
+	static collectSparklineStats() {
+		if (!_.get(Memory, 'visualStats.cpu')) {
+			_.set(Memory, 'visualStats.cpu', []);
+		}
+		Memory.visualStats.cpu.push({
+			limit: Game.cpu.limit,
+			bucket: Game.cpu.bucket,
+			cpu: Game.cpu.getUsed(),
+		});
+		if (Memory.visualStats.cpu.length >= 100) {
+			Memory.visualStats.cpu.shift();
+		}
 	}
 	
 	static drawRoomInfo(room) {
@@ -101,41 +195,6 @@ module.exports = class Visuals {
 		vis.text(text, x + sectionWidth / 2, y);
 		
 		if (VISUALS.ROOM_GLOBAL) {
-			// GCL
-			x = bufferWidth * 2 + sectionWidth;
-			vis.rect(x, y - 0.75, sectionWidth, 1, BAR_STYLE);
-			const GCL_PERCENTAGE = Game.gcl.progress / Game.gcl.progressTotal;
-			vis.rect(x, y - 0.75, GCL_PERCENTAGE * sectionWidth, 1, {
-				fill: getColourByPercentage(GCL_PERCENTAGE, true),
-				opacity: BAR_STYLE.opacity
-			});
-			vis.text(`GCL: ${Game.gcl.level} (${(GCL_PERCENTAGE * 100).toFixed(2)}%)`, x + sectionWidth / 2, y);
-			
-			// CPU
-			x += sectionWidth + bufferWidth;
-			vis.rect(x, y - 0.75, sectionWidth, 1, BAR_STYLE);
-			const CPU_PERCENTAGE = Game.cpu.getUsed() / Game.cpu.limit;
-			const FUNCTIONAL_CPU_PERCENTAGE = CPU_PERCENTAGE > 1 ? 1 : CPU_PERCENTAGE;
-			vis.rect(x, y - 0.75, FUNCTIONAL_CPU_PERCENTAGE * sectionWidth, 1, {
-				fill: getColourByPercentage(FUNCTIONAL_CPU_PERCENTAGE),
-				opacity: BAR_STYLE.opacity
-			});
-			vis.text(`CPU: ${(CPU_PERCENTAGE * 100).toFixed(2)}%`, x + sectionWidth / 2, y);
-			
-			// Bucket
-			x += sectionWidth + bufferWidth;
-			vis.rect(x, y - 0.75, sectionWidth, 1, BAR_STYLE);
-			const BUCKET_PERCENTAGE = Game.cpu.bucket / 10000;
-			vis.rect(x, y - 0.75, BUCKET_PERCENTAGE * sectionWidth, 1, {
-				fill: getColourByPercentage(BUCKET_PERCENTAGE, true),
-				opacity: BAR_STYLE.opacity
-			});
-			vis.text(`Bucket: ${Game.cpu.bucket}`, x + sectionWidth / 2, y);
-			
-			// Tick
-			x += sectionWidth + bufferWidth;
-			vis.text(`Tick: ${Game.time}`, x, y, {align: 'left'});
-			
 			// New line
 			y += 1.5;
 			
