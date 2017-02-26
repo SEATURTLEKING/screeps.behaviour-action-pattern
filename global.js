@@ -432,7 +432,7 @@ mod.startProfiling = function(label) {
                 const avg = _.round(Memory.profiling.totalCPU / Memory.profiling.ticks, 3);
                 if (ticks % 100 === 0) Memory.profiling.avgCPU[ticks] = avg;
                 Memory.profiling.avgCPU.current = avg;
-                if (_.length(Memory.profiling.types) > 0) {
+                if (_.size(Memory.profiling.types) > 0) {
                     let heading = '';
                     while (heading.length < PAD_HEADING) heading += ' ';
                     global.logSystem(heading, '(avg/creep/tick) (active) (weighted avg) (executions)');
@@ -442,7 +442,8 @@ mod.startProfiling = function(label) {
                         const typeAvg = _.round(data.total / data.totalCount, 3);
                         let heading = type + ': ';
                         while (heading.length < 30) heading += ' ';
-                        global.logSystem(heading, '' + typeAvg + data.count + (_.round(typeAvg * data.count, 3)) + data.totalCount );
+                        global.logSystem(heading, '     ' + typeAvg + '          ' +
+                            data.count + '       ' + (_.round(typeAvg * data.count, 3)) + '          ' + data.totalCount );
                         data.count = 0;
                     }
                 }
