@@ -1476,7 +1476,7 @@ mod.extend = function(){
             this.terminal.store.energy > 55000 ){
             let requiresEnergy = room => (
                 room.my &&
-                room.controller.level < 8 &&
+                //room.controller.level < 8 &&
                 room.storage && room.terminal &&
                 room.terminal.sum < room.terminal.storeCapacity - 50000 &&
                 room.storage.sum < room.storage.storeCapacity * 0.8 &&
