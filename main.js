@@ -132,7 +132,7 @@ global.install = () => {
         Tower: load("tower"),
         Events: load('events'),
         Grafana: GRAFANA ? load('grafana') : undefined,
-        Visuals: ROOM_VISUALS && Game.cpu.bucket > CRITICAL_BUCKET_LEVEL ? load('visuals') : undefined,
+        Visuals: ROOM_VISUALS && !Memory.CPU_CRITICAL ? load('visuals') : undefined,
     });
     _.assign(global.Task, {
         guard: load("task.guard"),
