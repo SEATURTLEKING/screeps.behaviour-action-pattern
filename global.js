@@ -449,7 +449,7 @@ mod.startProfiling = function(label) {
                 }
                 let heading = label + ' total ';
                 while (heading.length < 30) heading += ' ';
-                global.logSystem(heading, _.round(_total, 2) + ' CPU' + ' ' + avg + ' AVG (' + ticks + ' ticks)');
+                global.logSystem(heading, _.round(_total, 2) + ' CPU' + ' ' + avg + ' AVG (' + ticks + ' ticks) ' + Game.cpu.bucket + ' (bucket)');
                 console.log('\n');
             }
         };
