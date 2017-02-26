@@ -1912,6 +1912,32 @@ mod.extend = function(){
         //console.log(lab_master,"found slave labs",lab_slave_a,"for",component_a,"and",lab_slave_b,"for",component_b);
         return OK;
     };
+    Room.prototype.exits = function(findExit) {
+        let positions;
+        if (findExit === 0) {
+            // portals
+            positions = _.chain(this.find(FIND_STRUCTURES)).filter(function(s) {
+                return s.structureType === STRUCTURE_PORTAL;
+            }).map('pos').value();
+        } else {
+            positions = this.find(findExit);
+        }
+
+        // assuming in-order
+        let map = {};
+        let limit = 0;
+        const ret = [];
+        for (let i = 0; i < positions.length; i++) {
+            const pos = positions[i];
+            if (!(_.get(map,[pos.x-1, pos.y]) || _.get(map,[pos.x,pos.y-1]))) {
+                ret[limit] = _.pick(pos, ['x','y']);
+                map = {};
+                limit++;
+            }
+            _.set(map, [pos.x, pos.y], true);
+        }
+        return ret;
+    }
 };
 mod.flush = function(){
     let clean = room => {
