@@ -1941,7 +1941,7 @@ mod.extend = function(){
                 maxX = pos.x;
                 maxY = pos.y;
                 map = {};
-            }``
+            }
             _.set(map, [pos.x, pos.y], true);
             maxX = Math.max(maxX, pos.x);
             maxY = Math.max(maxY, pos.y);
