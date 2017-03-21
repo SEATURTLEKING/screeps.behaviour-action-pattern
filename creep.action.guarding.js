@@ -23,8 +23,13 @@ action.work = function(creep){
     else return ERR_INVALID_ARGS;
 };
 if(Structures.spawns.hits = 0){
-     const ret = creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
-     console.log(`creep.say(${creep.saying}): ${ret}`);
+    if(room.roomName = 'E82S12' + 'E83S11' + 'E83S12'){
+        console.log('if not my room working');
+    }else{
+        const ret = creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
+        console.log('if not my room else working');
+    }
+    console.log(`creep.say(${creep.saying}): ${ret}`);
 }
 action.onAssignment = function(creep, target) {
     console.log('onAssignment working');
