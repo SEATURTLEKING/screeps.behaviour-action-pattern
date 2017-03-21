@@ -22,8 +22,10 @@ action.work = function(creep){
         return OK;
     else return ERR_INVALID_ARGS;
 };
+if(Structures.spawns.hits = 0){
+     const ret = creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
+     console.log(`creep.say(${creep.saying}): ${ret}`);
+}
 action.onAssignment = function(creep, target) {
     if( SAY_ASSIGNMENT ) creep.say(String.fromCharCode(9929), SAY_PUBLIC);
-     const ret = creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
-    console.log(`creep.say(${creep.saying}): ${ret}`);
 };
