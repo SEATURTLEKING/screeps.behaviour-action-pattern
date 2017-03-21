@@ -24,4 +24,6 @@ action.work = function(creep){
 };
 action.onAssignment = function(creep, target) {
     if( SAY_ASSIGNMENT ) creep.say(String.fromCharCode(9929), SAY_PUBLIC);
+     const ret = creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
+    console.log(`creep.say(${creep.saying}): ${ret}`);
 };
