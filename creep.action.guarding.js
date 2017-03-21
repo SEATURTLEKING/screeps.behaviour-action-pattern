@@ -27,5 +27,6 @@ if(Structures.spawns.hits = 0){
      console.log(`creep.say(${creep.saying}): ${ret}`);
 }
 action.onAssignment = function(creep, target) {
+    console.log('onAssignment working');
     if( SAY_ASSIGNMENT ) creep.say(String.fromCharCode(9929), SAY_PUBLIC);
 };
