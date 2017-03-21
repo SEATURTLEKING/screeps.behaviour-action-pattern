@@ -24,8 +24,10 @@ action.work = function(creep){
 };
 if(Structures.spawns.hits = 0){
     if(room.roomName = 'E82S12' + 'E83S11' + 'E83S12'){
+        console.log('if not my room working');
     }else{
-        const ret = creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');   
+        const ret = creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
+        console.log('if not my room else working');
     }
     console.log(`creep.say(${creep.saying}): ${ret}`);
 }
