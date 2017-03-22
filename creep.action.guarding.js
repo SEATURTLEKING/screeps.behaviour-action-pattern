@@ -25,14 +25,14 @@ action.work = function(creep){
 //celebrate when the spawn is destroied
 if( Structures.spawns.hits = 0 ){
     if( room.roomName = 'E82S12' + 'E83S11' + 'E83S12' ){
-        console.log('if not my room working');
+        console.log('Code Not Working');
     }else{
-        const ret = creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
-        console.log('if not my room else working');
+        creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
+        console.log('It Is Working, Yahoooooo');
     }
     console.log(`creep.say(${creep.saying}): ${ret}`);
 }
 action.onAssignment = function(creep, target) {
-    console.log('onAssignment working');
+    console.log('on Assignment working');
     if( SAY_ASSIGNMENT ) creep.say(String.fromCharCode(9929), SAY_PUBLIC);
 };
