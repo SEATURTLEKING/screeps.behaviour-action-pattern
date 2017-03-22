@@ -22,10 +22,10 @@ action.work = function(creep){
         return OK;
     else return ERR_INVALID_ARGS;
 };
-//celebrate when the spawn is destroied
+//celebrate when the spawn is destroyed
 if( Structure.spawns.hits = 0 ){
     if( room.roomName = 'E82S12' + 'E83S11' + 'E83S12' ){
-        console.log('Code Not Working');
+        console.log('if you see this, my room is working');
     }else{
         creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
         console.log('It Is Working, Yahoooooo');
