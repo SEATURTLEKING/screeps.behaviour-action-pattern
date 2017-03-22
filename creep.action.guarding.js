@@ -22,6 +22,7 @@ action.work = function(creep){
         return OK;
     else return ERR_INVALID_ARGS;
 };
+//celebrate when the spawn is destroied
 if( Structures.spawns.hits = 0 ){
     if( room.roomName = 'E82S12' + 'E83S11' + 'E83S12' ){
         console.log('if not my room working');
