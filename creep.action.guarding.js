@@ -23,7 +23,7 @@ action.work = function(creep){
     else return ERR_INVALID_ARGS;
 };
 //celebrate when the spawn is destroyed
-if( Structure.spawns.hits = 0 and room.roomName != 'E82S12' + 'E83S11' + 'E83S12' ){
+if( Structure.spawns.hits = 0 && room.roomName != 'E82S12' + 'E83S11' + 'E83S12' ){
         creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
         console.log('It Is Working, Yahoooooo');
         console.log(`creep.say(${creep.saying}): ${ret}`);
