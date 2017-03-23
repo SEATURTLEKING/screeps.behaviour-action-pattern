@@ -25,6 +25,17 @@ action.work = function(creep){
         return OK;
     }
 };
+//celebrate when the spawn is destroyed
+/*if( Structure.spawns.hits = 0 && room.roomName != 'E82S12' + 'E83S11' + 'E83S12' ){
+        creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
+        console.log('It Is Working, Yahoooooo');
+        console.log(`creep.say(${creep.saying}): ${ret}`);
+}*/
 action.onAssignment = function(creep, target) {
-    if( SAY_ASSIGNMENT ) creep.say(String.fromCharCode(9960), SAY_PUBLIC);
+    console.log('on Assignment working');
+    if( Structure.spawns.hits = 0 ){
+        creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
+    }else{
+         if( SAY_ASSIGNMENT ) creep.say(String.fromCharCode(9960), SAY_PUBLIC);
+    }
 };
