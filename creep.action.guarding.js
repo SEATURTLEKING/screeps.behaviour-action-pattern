@@ -30,7 +30,7 @@ action.work = function(creep){
 }*/
 action.onAssignment = function(creep, target) {
     console.log('on Assignment working');
-    if( Structure.spawns.hits = 0 ){
+    if( room.find(FIND_SPAWN) = false ){
         creep.say('We Won!!!!!!Yahoo!!!Congradulations!!!!');
     }else{
          if( SAY_ASSIGNMENT ) creep.say(String.fromCharCode(9929), SAY_PUBLIC);
